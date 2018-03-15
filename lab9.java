@@ -2,70 +2,49 @@ import java.util.*;
 
 public class lab9 {
 	
-	public static void main (String args []) { //INITIALBUDGET ASKS USER TWICE FIXME
+	public static void main (String args []) { 
 		Scanner scnr = new Scanner(System.in);
-		String yN = "";
 		String error = "ERROR: Please input yes or no.";
-
-		yN = menuChoice();
 		
-		if (yN != "")
-			Questions (yN);
-	}
-	
-	public static double initialBudget () {
-		int i;
-		double userBudget = 0;
-		Scanner scnr = new Scanner(System.in);
-		String sUserBudget = "";
+		double userInitialBudget = 0;
+		double priceSum = 0;
+		double itemPrice = 0;
 		
-		System.out.println("What is your Initial budget?");
-		sUserBudget = scnr.next();
-		
-		for (i = 0; i < sUserBudget.length(); i++) {
-			boolean numTrue = Character.isDigit(sUserBudget.charAt(i));
-			
-			if (numTrue == false) {
-				System.out.println("Invalid input. Please enter a valid number.");
-				return userBudget = 0;
-			}
-		}
-		return userBudget = Double.valueOf(sUserBudget);
-	}
-	
-	public static String menuChoice () { //FINISH INPUT VALIDATION SIMILAR TO INITIALBUDGET + CASE 2 ALSO PRINTS ERROR MESSAGE FIXME
-		Scanner scnr = new Scanner(System.in);
 		int count = 0;
-		String yesNo = "";
 		String sPromptUser = "";
 		
-		double itemPrice = 0;
-		while (initialBudget() == 0);
-		
+		do {
+		System.out.println("What is your Initial budget?");
+		String sUserBudget = scnr.next();
+		userInitialBudget = initialBudget (sUserBudget);
+		}
+		while (userInitialBudget == 0);
+
 		do {
 		System.out.println("Please pick a menu choice below:"
 		+ "\n 1. Check if you should buy something"
 		+ "\n 2. Exit");
 		
 		sPromptUser = scnr.next();
-		//promptUser = Integer.valueOf(sPromptUser);
 	
 		switch(sPromptUser) {
 			case "1": 
-				System.out.println("\nWhat is the price of the item?");
-				itemPrice = scnr.nextDouble();
-				//System.out.println(totalExpense(itemPrice)); ECHO PRINT
+				do {
+					System.out.println("\nWhat is the price of the item?");
+					String sItemPrice = scnr.next();
+					priceSum = totalExpense(sItemPrice);
+				}	
+				while (priceSum == 0);
 				
-				System.out.println("\nCan you comfortably afford it?");
-				yesNo = scnr.next();
-				return yesNo;
+				String yesNoPrice = canAfford(userInitialBudget, priceSum);
+				Questions(yesNoPrice);
+				break;
 			
-			//FIXME
 			case "2":
-				System.out.println("Your total expense amount is: "); //followed by the sum of the items purchased. 
-				System.out.println("Your remaining balance is: "); //followed by the difference between the budget and the expenses. 
-				return "";
-				
+				System.out.println("Your total expense amount is: " + priceSum); //followed by the sum of the items purchased. 
+				System.out.println("Your remaining balance is: " + balance(userInitialBudget, priceSum)); //followed by the difference between the budget and the expenses. 
+				break;
+			
 			default:
 				System.out.println("\nIncorrect choice. Please input 1 or 2.");
 				count++;
@@ -79,16 +58,54 @@ public class lab9 {
 		}
 		
 		while ( (!sPromptUser.equals("1")) && (!sPromptUser.equals("2")) && (count < 3) );
-	
-		return yesNo;
-		
 	}
 	
-	public static double totalExpense(double itemPrice) {
-		//String sItemPrice = String.valueOf(itemPrice);
+	public static double initialBudget (String sUserBudget) {
+		int i;
+		double userBudget = 0;
+
+		for (i = 0; i < sUserBudget.length(); i++) {
+			boolean numTrue = Character.isDigit(sUserBudget.charAt(i));
+			
+			if (numTrue == false) {
+				System.out.println("Invalid input. Please enter a valid number.");
+				return userBudget = 0;
+			}
+		}
+		return userBudget = Double.valueOf(sUserBudget);
+	}
+	
+	public static String canAfford (double budget, double itemPrice) {
+		String yesNoPrice;
+		
+		if (budget > itemPrice)
+			yesNoPrice = "yes";
+		
+		else if (budget < itemPrice)
+			yesNoPrice = "no";
+		
+		else 
+			yesNoPrice = "";
+		System.out.println("Can you comfortably afford it?\n" + yesNoPrice);
+		return yesNoPrice;
+	}
+	
+	public static double totalExpense(String sItemPrice) {
+		int i;
+		double itemPrice = 0;
 		double priceSum = 0;
-		priceSum += itemPrice;
-		return priceSum;
+		
+		for (i = 0; i < sItemPrice.length(); i++) {
+			boolean numTrue = Character.isDigit(sItemPrice.charAt(i));
+			
+			if (numTrue == false) {
+				System.out.println("Invalid input. Please enter a valid number.");
+				return itemPrice = 0;
+			}
+		}
+		itemPrice = Double.valueOf(sItemPrice);
+		return priceSum += itemPrice;
+	
 	}
 	
 	public static double balance(double budget, double expense) {
@@ -96,11 +113,10 @@ public class lab9 {
 		return remainBal;
 	}
 	
-	public static void Questions (String yesNo) { //FINISH NO BRANCH IN SWITCH
+	public static String Questions (String yesNo) { //FINISH NO BRANCH IN SWITCH
 		Scanner scnr = new Scanner(System.in);
 		int choice;
 		String tell = "";
-		String invalid = "invalid";
 		
 		String q1 = "Do you have an immediate use for it?";
 		String q2 = "Can you borrow it from a friend?";
@@ -155,39 +171,38 @@ public class lab9 {
 					(yesNo.equalsIgnoreCase("no")? q6: error);
 				}
 				
-				else if (tell.equals(q2)) {
+				if (tell.equals(q2)) {
 					System.out.println(q2);
 					yesNo = scnr.next();
-					tell = yesNo.equalsIgnoreCase("yes")? "\nASK TO BORROW IT": 
+					tell = yesNo.equalsIgnoreCase("yes")? finMsg[1]: 
 					(yesNo.equalsIgnoreCase("no")? q4: error);
 				}
-				
 				
 				if (tell.equals(q6)) {
 					System.out.println(q6);
 					yesNo = scnr.next();
-					tell = yesNo.equalsIgnoreCase("yes")? "\nGO HOME AND SAVE UP": 
+					tell = yesNo.equalsIgnoreCase("yes")? finMsg[2]: 
 					(yesNo.equalsIgnoreCase("no")? q7: error);
-								
-						if (tell.equals(q7)) {
-							System.out.println(q7);
-							yesNo = scnr.next();
-							tell = yesNo.equalsIgnoreCase("yes")? q8: 
-							(yesNo.equalsIgnoreCase("no")? "\nCOMPARISON SHOP BEFORE BUYING": error);
-						}
 				}
 				
-				else if (tell.equals(q4)) {
-							System.out.println(q4);
-							yesNo = scnr.next();
-							tell = yesNo.equalsIgnoreCase("yes")? "\nPUT IT ON LAYAWAY": 
-							(yesNo.equalsIgnoreCase("no")? "\nGO HOME AND SAVE UP": error);
+				if (tell.equals(q7)) {
+					System.out.println(q7);
+					yesNo = scnr.next();
+					tell = yesNo.equalsIgnoreCase("yes")? q8: 
+					(yesNo.equalsIgnoreCase("no")? finMsg[3]: error);
+				}
+				
+				if (tell.equals(q4)) {
+					System.out.println(q4);
+					yesNo = scnr.next();
+					tell = yesNo.equalsIgnoreCase("yes")? finMsg[4]: 
+					(yesNo.equalsIgnoreCase("no")? finMsg[2]: error);
 				}
 				
 				if (tell.equals(q8)) {
 					System.out.println(q8);
 					yesNo = scnr.next();
-					tell = yesNo.equalsIgnoreCase("yes")? "\nBUY IT ALREADY": 
+					tell = yesNo.equalsIgnoreCase("yes")? finMsg[5]: 
 					(yesNo.equalsIgnoreCase("no")? finMsg[0]: error);
 				}
 				
@@ -199,13 +214,12 @@ public class lab9 {
 				yesNo = scnr.next();
 				break;
 				
-				//return yesNo;
-				
 			default:
-				//return invalid;
 				System.out.println(error);
 				tell = error;
 				break;
 		}
+
+		return tell;
 	}
 }
