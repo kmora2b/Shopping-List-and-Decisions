@@ -12,6 +12,7 @@ public class lab9 {
 		
 		int count = 0;
 		String sPromptUser = "";
+		String Msg = "";
 		
 		do {
 		System.out.println("What is your Initial budget?");
@@ -37,8 +38,11 @@ public class lab9 {
 				while (priceSum == 0);
 				
 				String yesNoPrice = canAfford(userInitialBudget, priceSum);
-				Questions(yesNoPrice);
-				break;
+				sPromptUser = Questions(yesNoPrice);
+				System.out.println(Msg);
+				
+			case "again":
+			break;
 			
 			case "2":
 				System.out.println("Your total expense amount is: " + priceSum); //followed by the sum of the items purchased. 
@@ -57,7 +61,7 @@ public class lab9 {
 			}
 		}
 		
-		while ( (!sPromptUser.equals("1")) && (!sPromptUser.equals("2")) && (count < 3) );
+		while ( (!sPromptUser.equals("1")) && (!sPromptUser.equals("2")) && (count < 3) && (sPromptUser.equals("again")) );
 	}
 	
 	public static double initialBudget (String sUserBudget) {
@@ -113,7 +117,7 @@ public class lab9 {
 		return remainBal;
 	}
 	
-	public static String Questions (String yesNo) { //FINISH NO BRANCH IN SWITCH
+	public static String Questions (String yesNo) { //FINISH NO BRANCH IN SWITCH + INPUT VALIDATION FOR ERROR
 		Scanner scnr = new Scanner(System.in);
 		int choice;
 		String tell = "";
@@ -131,6 +135,7 @@ public class lab9 {
 		String error = "ERROR: Please input yes or no.";
 		String finMsg [] = {"\nDON'T BUY IT", "\nASK TO BORROW IT", "\nGO HOME AND SAVE UP", 
 		"\nCOMPARISON SHOP BEFORE BUYING", "\nPUT IT ON LAYAWAY", "\nBUY IT ALREADY"};
+		
 		
 		switch(yesNo.toLowerCase()) {
 			
@@ -219,7 +224,8 @@ public class lab9 {
 				tell = error;
 				break;
 		}
-
+		if (tell.equals(finMsg[5]))
+			return "again";
 		return tell;
 	}
 }
