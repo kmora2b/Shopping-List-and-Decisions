@@ -2,27 +2,20 @@ import java.util.*;
 
 public class lab9 {
 	
-	public static void main (String args []) {
-		
+	public static void main (String args []) { //INITIALBUDGET ASKS USER TWICE FIXME
 		Scanner scnr = new Scanner(System.in);
-		double UB = 0;
-		//double userBudget = 0;
 		String yN = "";
 		String error = "ERROR: Please input yes or no.";
-		
-		while (initialBudget(UB) == 0) 
-			initialBudget(UB);
-		
-		//System.out.println(initialBudget(UB)); ECHO PRINT
 
 		yN = menuChoice();
 		
-		Questions (yN);
-		
+		if (yN != "")
+			Questions (yN);
 	}
 	
-	public static double initialBudget (double userBudget) {
+	public static double initialBudget () {
 		int i;
+		double userBudget = 0;
 		Scanner scnr = new Scanner(System.in);
 		String sUserBudget = "";
 		
@@ -36,22 +29,18 @@ public class lab9 {
 				System.out.println("Invalid input. Please enter a valid number.");
 				return userBudget = 0;
 			}
-			
 		}
 		return userBudget = Double.valueOf(sUserBudget);
 	}
 	
-	public static String menuChoice () {
+	public static String menuChoice () { //FINISH INPUT VALIDATION SIMILAR TO INITIALBUDGET + CASE 2 ALSO PRINTS ERROR MESSAGE FIXME
 		Scanner scnr = new Scanner(System.in);
 		int count = 0;
-		int promptUser;
 		String yesNo = "";
 		String sPromptUser = "";
 		
-		double a = 0;
 		double itemPrice = 0;
-		double TE = totalExpense(itemPrice);
-		double B = balance(initialBudget(a), TE);
+		while (initialBudget() == 0);
 		
 		do {
 		System.out.println("Please pick a menu choice below:"
@@ -73,10 +62,9 @@ public class lab9 {
 			
 			//FIXME
 			case "2":
-				System.out.println("Your total expense amount is: " + TE); //followed by the sum of the items purchased. 
-				System.out.println("Your remaining balance is: " + B); //followed by the difference between the budget and the expenses. 
-				break;
-			
+				System.out.println("Your total expense amount is: "); //followed by the sum of the items purchased. 
+				System.out.println("Your remaining balance is: "); //followed by the difference between the budget and the expenses. 
+				return "";
 				
 			default:
 				System.out.println("\nIncorrect choice. Please input 1 or 2.");
@@ -101,17 +89,14 @@ public class lab9 {
 		double priceSum = 0;
 		priceSum += itemPrice;
 		return priceSum;
-
 	}
 	
 	public static double balance(double budget, double expense) {
-		
 		double remainBal = budget - expense;
 		return remainBal;
-		
 	}
 	
-	public static void Questions (String yesNo) {
+	public static void Questions (String yesNo) { //FINISH NO BRANCH IN SWITCH
 		Scanner scnr = new Scanner(System.in);
 		int choice;
 		String tell = "";
@@ -128,27 +113,45 @@ public class lab9 {
 		String q9 = "You don't truly need this item.";
 		
 		String error = "ERROR: Please input yes or no.";
+		String finMsg [] = {"\nDON'T BUY IT", "\nASK TO BORROW IT", "\nGO HOME AND SAVE UP", 
+		"\nCOMPARISON SHOP BEFORE BUYING", "\nPUT IT ON LAYAWAY", "\nBUY IT ALREADY"};
 		
-		do {
 		switch(yesNo.toLowerCase()) {
 			
 			case "yes":
+				//"Do you have an immediate use for it?";
+				//YES: "Do you have cash to buy it instead of using a credit card?"
+					//YES: "Do you own something that serves the same purpose?"
+						//YES: "You don't truly need this item." + "DONT BUY IT" 
+							/*END*/
+						//NO: "Could your money be better spent on meeting a need?"
+							//YES: "GO HOME AND SAVE UP"
+								/*END*/
+							//NO: "Have you looked for sales, coupons, or generic versions?"
+								//YES: "After all this, do you still want to buy it?" + "BUY IT ALREADY"
+									/*END*/
+								//NO: "COMPARISON SHOPPING"
+									/*END*/
+					//NO: ""Can you borrow it from a friend?"
+				
+				//NO: ""You don't truly need this item." + "DONT BUY IT" 
+					/*END*/
 				System.out.println(q1);
 				yesNo = scnr.next();
 				
 				tell = yesNo.equalsIgnoreCase("yes")? q3: 
-				(yesNo.equalsIgnoreCase("no")? q9 + "\nDON'T BUY IT": error);
+				(yesNo.equalsIgnoreCase("no")? q9 + finMsg[0]: error);
 				if (tell.equals(q3)) {
 					System.out.println(q3);
 					yesNo = scnr.next();
+					tell = yesNo.equalsIgnoreCase("yes")? q5: 
+					(yesNo.equalsIgnoreCase("no")? q2: error);
 				}
 				
-				tell = yesNo.equalsIgnoreCase("yes")? q5: 
-				(yesNo.equalsIgnoreCase("no")? q2: error);
 				if (tell.equals(q5)) {
 					System.out.println(q5);
 					yesNo = scnr.next();
-					tell = yesNo.equalsIgnoreCase("yes")? q9 + "\nDON'T BUY IT": 
+					tell = yesNo.equalsIgnoreCase("yes")? q9 + finMsg[0]: 
 					(yesNo.equalsIgnoreCase("no")? q6: error);
 				}
 				
@@ -158,7 +161,6 @@ public class lab9 {
 					tell = yesNo.equalsIgnoreCase("yes")? "\nASK TO BORROW IT": 
 					(yesNo.equalsIgnoreCase("no")? q4: error);
 				}
-				
 				
 				
 				if (tell.equals(q6)) {
@@ -182,13 +184,11 @@ public class lab9 {
 							(yesNo.equalsIgnoreCase("no")? "\nGO HOME AND SAVE UP": error);
 				}
 				
-				
-				
 				if (tell.equals(q8)) {
 					System.out.println(q8);
 					yesNo = scnr.next();
 					tell = yesNo.equalsIgnoreCase("yes")? "\nBUY IT ALREADY": 
-					(yesNo.equalsIgnoreCase("no")? "\nDON'T BUY IT": error);
+					(yesNo.equalsIgnoreCase("no")? finMsg[0]: error);
 				}
 				
 				System.out.println(tell);
@@ -207,31 +207,5 @@ public class lab9 {
 				tell = error;
 				break;
 		}
-		}
-		while ( (yesNo.equals("yes")) && (yesNo.equals("no")) );
-		//return tell;
-		
-		//String a = yesNo.equalsIgnoreCase("yes")? "Do you have an immediate use four it?": "Can you borrow it from a friend?";
-		
-		
-		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
