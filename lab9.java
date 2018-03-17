@@ -1,8 +1,10 @@
 import java.util.*;
-
+//CHECK CODE
+//COMMENT ON CODE
+//MAKE IT LOOK PRETTIER
 public class lab9 {
 	
-	public static void main (String args []) { 
+	public static void main (String args []) { //FIXME: PRICE ITEM IS DOUBLED AND DOES NOT TAKE IN MORE VALUES
 		Scanner scnr = new Scanner(System.in);
 		String error = "ERROR: Please input yes or no.";
 		
@@ -41,7 +43,7 @@ public class lab9 {
 				sPromptUser = Questions(yesNoPrice);
 				System.out.println(Msg);
 				
-			case "again":
+			//case "again":
 			break;
 			
 			case "2":
@@ -61,7 +63,7 @@ public class lab9 {
 			}
 		}
 		
-		while ( (!sPromptUser.equals("1")) && (!sPromptUser.equals("2")) && (count < 3) && (sPromptUser.equals("again")) );
+		while ( ((!sPromptUser.equals("1")) && (!sPromptUser.equals("2")) && (count < 3)) && (sPromptUser.equals("again")) );
 	}
 	
 	public static double initialBudget (String sUserBudget) {
@@ -97,8 +99,7 @@ public class lab9 {
 	public static double totalExpense(String sItemPrice) {
 		int i;
 		double itemPrice = 0;
-		double priceSum = 0;
-		
+		double itemSum = 0;
 		for (i = 0; i < sItemPrice.length(); i++) {
 			boolean numTrue = Character.isDigit(sItemPrice.charAt(i));
 			
@@ -107,17 +108,18 @@ public class lab9 {
 				return itemPrice = 0;
 			}
 		}
+		
 		itemPrice = Double.valueOf(sItemPrice);
-		return priceSum += itemPrice;
-	
+		return itemPrice += itemPrice;
+		
 	}
 	
 	public static double balance(double budget, double expense) {
-		double remainBal = budget - expense;
-		return remainBal;
+		double remainBal = 0;
+		return remainBal = (remainBal) + (budget - expense);
 	}
 	
-	public static String Questions (String yesNo) { //FINISH NO BRANCH IN SWITCH + INPUT VALIDATION FOR ERROR
+	public static String Questions (String yesNo) { 
 		Scanner scnr = new Scanner(System.in);
 		int choice;
 		String tell = "";
@@ -136,7 +138,7 @@ public class lab9 {
 		String finMsg [] = {"\nDON'T BUY IT", "\nASK TO BORROW IT", "\nGO HOME AND SAVE UP", 
 		"\nCOMPARISON SHOP BEFORE BUYING", "\nPUT IT ON LAYAWAY", "\nBUY IT ALREADY"};
 		
-		
+
 		switch(yesNo.toLowerCase()) {
 			
 			case "yes":
@@ -157,66 +159,110 @@ public class lab9 {
 				
 				//NO: ""You don't truly need this item." + "DONT BUY IT" 
 					/*END*/
-				System.out.println(q1);
-				yesNo = scnr.next();
 				
-				tell = yesNo.equalsIgnoreCase("yes")? q3: 
-				(yesNo.equalsIgnoreCase("no")? q9 + finMsg[0]: error);
+				do {
+					System.out.println(q1);
+					yesNo = scnr.next();
+					
+					tell = yesNo.equalsIgnoreCase("yes")? q3: 
+					(yesNo.equalsIgnoreCase("no")? q9 + finMsg[0]: error);
+				}
+				while (tell == error);
+				
 				if (tell.equals(q3)) {
+					do {
 					System.out.println(q3);
 					yesNo = scnr.next();
 					tell = yesNo.equalsIgnoreCase("yes")? q5: 
 					(yesNo.equalsIgnoreCase("no")? q2: error);
+					}
+					while (tell == error);
 				}
 				
+				
 				if (tell.equals(q5)) {
+					do {
 					System.out.println(q5);
 					yesNo = scnr.next();
 					tell = yesNo.equalsIgnoreCase("yes")? q9 + finMsg[0]: 
 					(yesNo.equalsIgnoreCase("no")? q6: error);
+					}
+					while (tell == error);
 				}
 				
 				if (tell.equals(q2)) {
+					do {
 					System.out.println(q2);
 					yesNo = scnr.next();
 					tell = yesNo.equalsIgnoreCase("yes")? finMsg[1]: 
 					(yesNo.equalsIgnoreCase("no")? q4: error);
+					}
+					while (tell == error);
 				}
 				
 				if (tell.equals(q6)) {
+					do {
 					System.out.println(q6);
 					yesNo = scnr.next();
 					tell = yesNo.equalsIgnoreCase("yes")? finMsg[2]: 
 					(yesNo.equalsIgnoreCase("no")? q7: error);
+					}
+					while (tell == error);
 				}
 				
 				if (tell.equals(q7)) {
+					do {
 					System.out.println(q7);
 					yesNo = scnr.next();
 					tell = yesNo.equalsIgnoreCase("yes")? q8: 
 					(yesNo.equalsIgnoreCase("no")? finMsg[3]: error);
+					}
+					while (tell == error);
 				}
 				
 				if (tell.equals(q4)) {
+					do {
 					System.out.println(q4);
 					yesNo = scnr.next();
 					tell = yesNo.equalsIgnoreCase("yes")? finMsg[4]: 
 					(yesNo.equalsIgnoreCase("no")? finMsg[2]: error);
+					}
+					while (tell == error);
+					
 				}
 				
 				if (tell.equals(q8)) {
+					do {
 					System.out.println(q8);
 					yesNo = scnr.next();
 					tell = yesNo.equalsIgnoreCase("yes")? finMsg[5]: 
 					(yesNo.equalsIgnoreCase("no")? finMsg[0]: error);
+					}
+					while (tell == error);
 				}
-				
 				System.out.println(tell);
 				break;
 			
 			case "no":
-				System.out.println(q1);
-				yesNo = scnr.next();
+				do {
+					System.out.println(q2);
+					yesNo = scnr.next();
+					
+					tell = yesNo.equalsIgnoreCase("yes")? finMsg[1]: 
+					(yesNo.equalsIgnoreCase("no")? q4: error);
+				}
+				while (tell == error);
+				
+				if (tell.equals(q4)) {
+					do {
+					System.out.println(q4);
+					yesNo = scnr.next();
+					tell = yesNo.equalsIgnoreCase("yes")? finMsg[4]: 
+					(yesNo.equalsIgnoreCase("no")? finMsg[2]: error);
+					}
+					while (tell == error);
+				}
+				System.out.println(tell);
 				break;
 				
 			default:
@@ -224,6 +270,7 @@ public class lab9 {
 				tell = error;
 				break;
 		}
+
 		if (tell.equals(finMsg[5]))
 			return "again";
 		return tell;
